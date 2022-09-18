@@ -50,12 +50,12 @@ class Command(makemessages.Command):
         super().handle(*args, **options)
 
         self.restore_comments(backup)
-        #self.post_process_po_files()
+        self.post_process_po_files()
 
         self.stdout.write(self.style.SUCCESS("All Done! 🎉"))
 
     def post_process_po_files(self):
-            print(app.path)
+        for app in ALL_APPS:
             for locale in self.locales:
                 po_path = get_po_file_path(app.path, locale)
 
@@ -111,7 +111,6 @@ class Command(makemessages.Command):
         backup = {}
 
         for app in ALL_APPS:
-            print(type(app))
             for locale in self.locales:
                 po_path = get_po_file_path(app.path, locale)
 
