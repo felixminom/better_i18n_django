@@ -7,6 +7,7 @@ authors = ["Felix Miño <fmino@stackbuilders.com>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 Django = "^4.1"
+polib = "^1.1.1"
 
 [tool.poetry.dev-dependencies]
 
