@@ -16,4 +16,4 @@ msgstr ""
 #. project=test_1
 #: app1/templates/index.html:4
 msgid "This is supposed to be a subtitle"
-msgstr ""
+msgstr "Translated string"
