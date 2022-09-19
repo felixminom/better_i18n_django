@@ -22,7 +22,6 @@ msgstr ""
 msgid "Hello from file"
 msgstr "This should be a de string"
 
-#. project=test_1
 #: app1/templates/index.html:4
 msgid "This is supposed to be a subtitle"
 msgstr "Translated string"
