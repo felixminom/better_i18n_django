@@ -19,9 +19,9 @@ class Command(BaseCommand):
 
     help = (
         'This management command is the first step to create an independent PO file'
-        'that can be sent for parallel. When run, this command will add a project name'
-        'to entries that need translation.'
-        'Usage: python manage.py poprojectcreate -l de'
+        'that can be sent for parallel transalation. When run, this command will add'
+        'a project name to entries that need translation.'
+        'Usage: python manage.py tagmessages -l de -p'
     )
 
     def add_arguments(self, parser):
