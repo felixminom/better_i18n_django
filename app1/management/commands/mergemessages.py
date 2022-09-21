@@ -19,7 +19,7 @@ class Command(BaseCommand):
     help = (
         'This management command will merge back translated strings located in the'
         'PO file created with extractmessages.'
-        'Usage: python manage.py mergemessages -a app1 -l de -p jdoe_20220101 path/to/PO/translated/file'
+        'Usage: python manage.py mergemessages -a app1 -l de -p jdoe_20220101 path/to/translated/PO/file'
     )
 
     def add_arguments(self, parser):

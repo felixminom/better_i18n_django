@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
     help = (
         'This management command creates a new PO file from tagged entries'
-        'Usage: python manage.py poprojectwrite -p jdoe_20220101 -l de'
+        'Usage: python manage.py extractmessages -p jdoe_20220101 -l de'
     )
 
     def add_arguments(self, parser):

@@ -42,7 +42,7 @@ class Command(makemessages.Command):
         if options["all"]:
             self.locales = list(map(to_locale, SUPPORTED_LANGUAGES))
             self.all = False
-            
+
         options["locale"] = self.locales
 
         backup = self.backup_comments()

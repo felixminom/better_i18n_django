@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
     help = (
         'This management command removes po project tags'
-        'Usage: python manage.py poprojectdelete -l de -p jdoe_20210101'
+        'Usage: python manage.py cleanmessages -l de -p jdoe_20210101'
     )
 
     def add_arguments(self, parser):
