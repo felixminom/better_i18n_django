@@ -2,24 +2,24 @@
 
 This is a proposed workflow to better manage huge PO files in Django apps by using the [polib](link-to-polib)
 library, and is mainly intended for the management of PO files that are produced when translating static
-pages (one PO file contains all the strings of the templates that are in the [app](django-app),
-anyways these concepts could be applied in other scenarios or other frameworks. If you have giant PO
+pages (one PO file contains all the strings of the templates that are in the [app](django-app)),
+Anyway, these concepts could be applied in other scenarios or other frameworks. If you have giant PO
 files and you don't know how to deal with them probably this is what you're looking for.
 
-We assume that you're familiarized with the basic concepts around PO files and their structure.
-If not, you can take a look at the [official documentation](po-documentation). We assume that
+We assume you're familiar with the basic concepts around PO files and their structure.
+If not, you can look at the [official documentation](po-documentation). We assume that
 you have at least a little experience around i18n in Django, as well.
 
 ## A little of the history
 
-Some time ago, with my team, we were internationalizing our client's website. In the beginning, everyhting
+Some time ago, with my team, we were internationalizing our client's website. In the beginning, everything
 was pretty simple and straightforward, we had one [locale](what-is-a-locale) and we were translating just
-a couple of pages, so our PO files were little enough and we were able to handle them easily.
+a couple of pages, so our PO files were small enough and we were able to handle them easily.
 
-A couple of months went off, and we had three locales and way more pages that we were translating, so
+A couple of months went by, and we had three locales and way more pages that we were translating, so
 the problem started to be noticeable. We were sending these giant PO files (one per locale and app),
 around ~30k lines, over and over again for translation. Translators started to complain that they were not
-able to identify what strings needed translation and which not, or at least not in an easy way. So,
+able to identify what strings needed translation and which didn't, or at least not in an easy way. So,
 after some thinking and learning about what PO files really are, we came up with this workflow.
 The main idea behind it is to break up giant PO files into smaller, more manageable, that just
 contains `untranslated` entries into a new (temporal) PO.
@@ -34,19 +34,19 @@ merge conflicts.
 attention
 
 This workflow relies on the [extracted comments](po-documentation) concept that allows developers to
-add comments in a programmatic way. This decision was a little tricky, since we were thinking of using
-`translator comments` but we're developers, not translators and `extracted comments` were a better fit
+add comments in a programmatic way. This decision was a little tricky since we were thinking of using
+`translator comments` but we're developers, not translators, and `extracted comments` were a better fit
 in our opinion, this could lead to a whole new debate, but for now, we will stick to `extracted comments`
 and that's what you need to know.
 
 So what are `extracted comments`?
 
 > Comment lines starting with `#.` contain comments given by the programmer, directed at the translator;
-> these comments are called extracted comments because the xgettext program extracts them from the program’s
+> These comments are called extracted comments because the `xgettext` program extracts them from the program’s
 > source code.
 
 As you can see, these are messages that developers aim to translators. In this specific case,
-we will use `extracted comments` for letting translators know that a specific `PO Entry` belongs to
+we will use `extracted comments` to let translators know that a specific `PO Entry` belongs to
 a given `project`. For example, an `untranslated` entry with an extracted comment will look like this:
 
 ```python
@@ -55,7 +55,7 @@ a given `project`. For example, an `untranslated` entry with an extracted commen
 msgid "Lorem ipsum"
 msgstr ""
 ```
-Due to the decision of using `extracted comments`, the `makemessages` django command had to be monkey patched.
+Due to the decision to use `extracted comments`, the `makemessages` Django command had to be monkey patched.
 Django pulls `extracted comments` from the code base, but in this case, we're introducing them programmatically
 using the `polib`, so we needed to keep these comments even if they're not in the code base.
 
@@ -72,9 +72,9 @@ The whole workflow looks like this:
 Now, instead of two CLI commands (`makemessages` and `compilemessages`) we will have six commands,
 each is detailed below:
 
-* `makemessages`: this is the same command as the one in the django code base, it will accept all the
-parameters that are accepted in the original one, and will accept one aditional `--allow-obsolete`.
-We identified that django `makemessages` keep PO entries that are no longer used (e.g. From templates
+* `makemessages`: this is the same command as the one in the Django code base, it will accept all the
+parameters that are accepted in the original one, and will accept one additional `--allow-obsolete`.
+We identified that Django `makemessages` keep PO entries that are no longer used (e.g. From templates
 that have been deleted), so we decided to not keep those by default, and give the user the option to
 delete or keep them by using this flag. Usage: `python manage.py makemessages -l de`.
 
@@ -83,7 +83,7 @@ sent for parallel translation. When run, this command will add a project name to
 translation, as in the example above. Usage: `python manage.py tagmessages -l de -p jdoe_20220101`.
 You could also tag entries for a single template by using the `--file-name` param. When in use,
 this command will only tag the entries that are contained in the given path. Usage:
-`python manage.py tagmessages -l de -p jdoe_20220101 -f app1/templates/index.html` .
+`python manage.py tagmessages -l de -p jdoe_20220101 -f app1/templates/index.html`.
 
 * `extractmessages`: this command will take the previously tagged entries and will create a temporal PO
 file with them. The output of this command is the file you will be using and sending for translation.
@@ -96,7 +96,7 @@ that we want to merge back needs to be provided.
 Usage: `python manage.py mergemessages -a app1 -l de -p jdoe_20220101 path/to/translated/PO/file`.
 
 * `cleanmessages`: finally, we need a way to delete the `extracted comments` added for the project and
-also the temporary file created in `extractmessages` step. The `cleanmessages` command allow us to do
+also the temporary file created in `extractmessages` step. The `cleanmessages` command allows us to do
 both things. Usage: `python manage.py cleanmessages -l de -p jdoe_20220101`
 
 * The `compilemessages` command will need to be run exactly as it is in the original workflow. One last
